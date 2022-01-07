@@ -4,6 +4,7 @@
   - name: create file
     ansible.builtin.file:
       path: /tmp/testfile
+      state: touch
       owner: grimdark
       group: grimdark
       mode: '0644'
