@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+  - name: create file
+    ansible.builtin.file:
+      path: /tmp/testfile
+      owner: grimdark
+      group: grimdark
+      mode: '0644'
