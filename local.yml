@@ -1,10 +1,12 @@
 ---
 - hosts: localhost
   tasks:
-  - name: create file
-    ansible.builtin.file:
-      path: /tmp/testfile
-      state: touch
-      owner: grimdark
-      group: grimdark
-      mode: '0644'
+  - name: Gather the package facts
+    package_facts:
+      manager: auto
+  - name: Install Cinnamon
+    apt:
+      name: cinnamon
+      state: present
+    when: "'cinnamon' in ansible_fact.packages"
+      
