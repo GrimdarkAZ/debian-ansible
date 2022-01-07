@@ -4,9 +4,12 @@
   - name: Gather the package facts
     package_facts:
       manager: auto
-  - name: Install Cinnamon
-    apt:
-      name: cinnamon
-      state: present
-    when: "'cinnamon' in ansible_fact.packages"
+  - name: Check for Cinnamon
+    debug:
+      msg: "{{ ansible_facts.packages['cinnamon'] | length }} versions of cinnamon are installed!"
+  # - name: Install Cinnamon
+  #   apt:
+  #     name: cinnamon
+  #     state: present
+  #   when: "'cinnamon' in ansible_fact.packages"
       
