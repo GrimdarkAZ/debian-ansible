@@ -13,7 +13,7 @@
   - name: Install Cinnamon-Core
     apt:
       name: cinnamon-core
-      state: latest
+      state: present
   # - name: Install Cinnamon
   #   apt:
   #     name: cinnamon
