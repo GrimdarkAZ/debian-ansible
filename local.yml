@@ -7,6 +7,12 @@
   - name: Check for Cinnamon
     debug:
       msg: "{{ ansible_facts.packages['cinnamon'] | length }} versions of cinnamon are installed!"
+    when: "'cinnamon' in ansible_facts.packages"
+
+  - name: Install Cinnamon-Core
+    apt:
+      name: cinnamon-core
+      state: latest
   # - name: Install Cinnamon
   #   apt:
   #     name: cinnamon
