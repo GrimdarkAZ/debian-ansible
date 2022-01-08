@@ -5,18 +5,27 @@
   - name: Gather the package facts
     package_facts:
       manager: auto
-  - name: Check for Cinnamon
+  - name: Check for kde-standard
     debug:
-      msg: "{{ ansible_facts.packages['cinnamon'] | length }} versions of cinnamon are installed!"
-    when: "'cinnamon' in ansible_facts.packages"
+      msg: "{{ ansible_facts.packages['kde-standard'] | length }} versions of kde-standard are installed!"
+    when: "'kde-standard' in ansible_facts.packages"
 
   - name: Install Cinnamon-Core
     apt:
-      name: cinnamon-core
+      name: kde-standard
       state: present
-  # - name: Install Cinnamon
-  #   apt:
-  #     name: cinnamon
-  #     state: present
-  #   when: "'cinnamon' in ansible_fact.packages"
+    when: "'kde-standard' not in ansible_facts.packages"
+
+  - name: Switch to NetworkManager
+    lineinfile:
+      path: /etc/NetworkManager/NetworkManager.conf
+      regexp: '^managed'
+      line: managed=true
+    register: NetworkManager
+
+  - name: Restart NetworkManager
+      service:
+        name: NetworkManager
+        state: restarted
+      when: NetworkManager.changed
       
