@@ -10,22 +10,42 @@
       msg: "{{ ansible_facts.packages['kde-standard'] | length }} versions of kde-standard are installed!"
     when: "'kde-standard' in ansible_facts.packages"
 
-  - name: Install Cinnamon-Core
+  - name: Install kde-standard
     apt:
       name: kde-standard
       state: present
     when: "'kde-standard' not in ansible_facts.packages"
 
+  - name: Install network-manager
+    apt:
+      name: network-manager
+      state: present
+    register: network-manager-installed
+    when: "'network-manager' not in ansible_facts.packages"
+    
+  
   - name: Switch to NetworkManager
     lineinfile:
       path: /etc/NetworkManager/NetworkManager.conf
       regexp: '^managed'
       line: managed=true
     register: NetworkManager
+    when: network-manager-installed.changed
 
   - name: Restart NetworkManager
       service:
         name: NetworkManager
         state: restarted
       when: NetworkManager.changed
+  
+  - name: cleanup crontab
+    lineinfile:
+      path: /etc/crontab
+      regexp: '^@reboot'
+      state: absent
+
+  - name: reboot
+    reboot:
+  
+  - name: 
       
